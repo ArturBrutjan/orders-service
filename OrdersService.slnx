@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="compose.yaml" />
+  </Folder>
+  <Project Path="OrdersService.Application/OrdersService.Application.csproj" />
+  <Project Path="OrdersService.Core/OrdersService.Core.csproj" />
+  <Project Path="OrdersService.Infrastructure.Ef/OrdersService.Infrastructure.Ef.csproj" />
+  <Project Path="OrdersService.Infrastructure.Rabbit/OrdersService.Infrastructure.Rabbit.csproj" />
+</Solution>

@@ -1,0 +1,82 @@
+﻿services:
+  ordersservice.application:
+    image: ordersservice.application
+    ports:
+      - "9999:8080"
+    build:
+      context: .
+      dockerfile: OrdersService.Application/Dockerfile
+    environment:
+      - ConnectionStrings__OrdersServiceDb=Host=db;Database=OrdersServiceDb;Username=user1;Password=password123;
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__Username=user
+      - RabbitMQ__Password=password
+      - RabbitMQ__Port=5672
+      - ASPNETCORE__HTTP__PORTS=8080
+      - ASPNETCORE__HTTPS__PORTS=8081
+    depends_on:     
+      rabbitmq:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:4-management  # Includes the Management UI plugin
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"   # AMQP protocol port
+      - "15672:15672" # Management UI dashboard
+    networks:
+      - app-network
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    restart: always
+    environment:
+      - POSTGRES_USER=user1
+      - POSTGRES_PASSWORD=password123
+      - POSTGRES_DB=OrdersServiceDb
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user1 -d OrdersServiceDb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - app-network
+
+volumes:
+  rabbitmq_data:
+  postgres_data:
+  prometheus_data:
+
+networks:
+  app-network:
+    driver: bridge
