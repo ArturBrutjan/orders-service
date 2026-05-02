@@ -21,6 +21,11 @@ public record Order
     public required OrderStatus Status { get; set; }
 
     /// <summary>
+    /// Customer Id
+    /// </summary>
+    public required Guid CustomerId { get; set; }
+
+    /// <summary>
     /// Order Total
     /// </summary>
     public decimal? OrderTotal => OrderItems.Sum(item => item.Subtotal);

@@ -11,11 +11,6 @@ public class OrderItemEntity
     public required Guid OrderItemId { get; init; }
     
     /// <summary>
-    /// Order item price
-    /// </summary>
-    public decimal Price { get; set; }
-    
-    /// <summary>
     /// Order item quantity
     /// </summary>
     public required int Quantity { get; set; }

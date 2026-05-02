@@ -17,6 +17,7 @@ public class OrderEntityConfiguration : IEntityTypeConfiguration<OrderEntity>
     {
         builder.HasKey(x => x.OrderId);
         builder.Property(x => x.OrderId).IsRequired();
+        builder.Property(x => x.CustomerId).IsRequired();
         builder.HasIndex(x => x.OrderId).IsUnique();
     }
 }

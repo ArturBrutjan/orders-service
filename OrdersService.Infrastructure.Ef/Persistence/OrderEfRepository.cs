@@ -24,7 +24,8 @@ public class OrderEfRepository : IOrderRepository
         await _dbContext.Orders.AddAsync(new OrderEntity
         {
             OrderId = order.Id,
-            Status = order.Status
+            Status = order.Status,
+            CustomerId = order.CustomerId
         });
 
         await _dbContext.OrderItems.AddRangeAsync(order.OrderItems.Select(x => new OrderItemEntity

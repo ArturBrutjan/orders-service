@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OrdersService.Infrastructure.Ef.Persistence;
@@ -11,9 +12,11 @@ using OrdersService.Infrastructure.Ef.Persistence;
 namespace OrdersService.Infrastructure.Ef.Migrations
 {
     [DbContext(typeof(OrdersServiceDbContext))]
-    partial class OrdersServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260502115630_AndCustomerIdRemovePrice")]
+    partial class AndCustomerIdRemovePrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

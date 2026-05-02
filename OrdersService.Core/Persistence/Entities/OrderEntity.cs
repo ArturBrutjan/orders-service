@@ -16,4 +16,9 @@ public class OrderEntity
     /// Order Status
     /// </summary>
     public required OrderStatus Status { get; set; }
+
+    /// <summary>
+    /// Customer Id
+    /// </summary>
+    public required Guid CustomerId { get; set; }
 }

@@ -30,7 +30,6 @@ public static class OrderEndpoints
         [FromServices] IInventoryRepository inventoryRepo,
         [FromServices] IEventBus eventBus)
     {
-        await unitOfWork.BeginTransactionAsync();
         
         var (isValid, missingInventory) = await ValidateInventory();
         if (!isValid)
@@ -50,6 +49,8 @@ public static class OrderEndpoints
 
         var order = CreateOrder();
         var orderCreatedEvent = CreateEvent();
+
+        await unitOfWork.BeginTransactionAsync();
 
         await orderRepo.CreateOrderAsync(order);
         await eventBus.PublishAsync(orderCreatedEvent);
@@ -74,6 +75,7 @@ public static class OrderEndpoints
             {
                 Id = orderId,
                 Status = OrderStatus.New,
+                CustomerId = request.CustomerId,
                 OrderItems = request.Items.Select(x => new OrderItem
                 {
                     Id = Guid.NewGuid(),
